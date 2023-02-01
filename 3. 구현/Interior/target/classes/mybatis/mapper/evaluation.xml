@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.leftdivision.interior.evaluation.dao.IEvaluationDao">
+
+<insert id="registeMarker" parameterType="MarkerVO">
+	INSERT INTO marker (
+		 MARKER_ID
+		,MARKER_LAT
+		,MARKER_LONGT
+		,MARKER_TITLE
+		,MARKER_ADD
+		,MARKER_CON
+		,MARKER_CON_DETAIL
+		,MARKER_SCORE
+		,MARKER_IMAGE
+		,MARKER_EVA_DETAIL
+		,MARKER_REG_ID
+		,MARKER_REG_DATE
+	) VALUES (
+	     (SELECT 'MARK' || LPAD(NVL(MAX(replace(MARKER_ID,'MARK','')),0) + 1, 6 ,'0') FROM marker)
+	    ,#{markerLat}
+	    ,#{markerLongt}
+	    ,#{markerTitle}
+	    ,#{markerAdd}
+	    ,#{markerCon}
+	    ,#{markerConDetail}
+	    ,#{markerScore}
+	    ,#{markerImage}
+	    ,#{markerEvaDetail}
+	    ,#{markerRegId}
+	    ,SYSDATE
+	)
+</insert>
+
+
+<select id="getMarkerList" resultType="MarkerVO">
+	SELECT   
+		 MARKER_ID
+		,MARKER_LAT
+		,MARKER_LONGT
+		,MARKER_TITLE
+		,MARKER_ADD
+		,MARKER_CON
+		,MARKER_CON_DETAIL
+		,MARKER_SCORE
+		,MARKER_EVA_DETAIL
+		,MARKER_IMAGE
+		,MARKER_REG_ID
+		,MARKER_REG_DATE
+	FROM
+		MARKER
+</select>
+
+<select id="areaGetMarkerList" parameterType="AreaMarkerVO"
+resultType="MarkerVO">
+	SELECT   
+		 MARKER_ID
+		,MARKER_LAT
+		,MARKER_LONGT
+		,MARKER_TITLE
+		,MARKER_ADD
+		,MARKER_CON
+		,MARKER_CON_DETAIL
+		,MARKER_SCORE
+		,MARKER_EVA_DETAIL
+		,MARKER_IMAGE
+		,MARKER_REG_ID
+		,MARKER_REG_DATE
+	FROM
+		MARKER
+	WHERE   
+		<![CDATA[TO_NUMBER(MARKER_LAT) >= #{minLat}]]>
+	  AND   
+	  	<![CDATA[TO_NUMBER(MARKER_LAT) <= #{maxLat}]]>
+	  AND   
+	  	<![CDATA[TO_NUMBER(MARKER_LONGT) >= #{minLongt}]]>
+	  AND   
+	  	<![CDATA[TO_NUMBER(MARKER_LONGT) <= #{maxLongt}]]>
+</select>
+
+<select id="getMarkerKey" resultType="String">
+	SELECT 'MARK' || LPAD(NVL(MAX(replace(MARKER_ID,'MARK','')),0) + 1, 6 ,'0') FROM marker
+</select>
+
+<select id="getSeNo" resultType="int">
+	SELECT last_number
+	FROM   all_sequences
+	WHERE  sequence_name = 'SEQ_ATCH'
+</select>
+
+
+
+
+
+
+
+
+
+
+</mapper>

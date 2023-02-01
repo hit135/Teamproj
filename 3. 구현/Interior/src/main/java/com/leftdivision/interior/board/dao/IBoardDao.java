@@ -1,0 +1,28 @@
+package com.leftdivision.interior.board.dao;
+
+import java.util.List;
+
+import org.apache.ibatis.annotations.Mapper;
+
+import com.leftdivision.interior.board.vo.BoardSearchVO;
+import com.leftdivision.interior.board.vo.BoardVO;
+
+@Mapper
+public interface IBoardDao {
+
+	List<BoardVO> getBoardList(BoardSearchVO searchVO);
+	
+	int getTotalRowCount(BoardSearchVO searchVO);
+
+	int checkUser(BoardVO board);
+
+	int insertBoard(BoardVO board);
+
+	String getFreeBoardKey();
+	
+
+
+	
+
+
+}

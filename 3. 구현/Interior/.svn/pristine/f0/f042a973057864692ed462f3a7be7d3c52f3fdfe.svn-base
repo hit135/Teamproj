@@ -1,0 +1,30 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<!-- 타일즈 -->
+<%@ taglib uri="http://tiles.apache.org/tags-tiles" prefix="tiles" %>
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>내 집 평가</title>
+<style type="text/css">
+body{
+	padding-top:110px;
+}
+</style>
+</head>
+<body>
+	<!-- 헤더 -->
+	<div id="wrap">
+		<tiles:insertAttribute name="header"/>
+	</div>
+
+	<!-- 바디 -->
+	<tiles:insertAttribute name="body"/>
+	
+	<!-- 풋터 -->	
+	<div class="site-footer">
+		<tiles:insertAttribute name="footer"/>
+	</div>
+</body>
+</html>

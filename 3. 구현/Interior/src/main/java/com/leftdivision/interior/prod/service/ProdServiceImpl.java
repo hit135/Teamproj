@@ -1,0 +1,88 @@
+package com.leftdivision.interior.prod.service;
+
+import java.util.List;
+
+import javax.inject.Inject;
+
+import org.springframework.stereotype.Service;
+
+import com.leftdivision.interior.exception.BizNotEffectedException;
+import com.leftdivision.interior.exception.BizNotFoundException;
+import com.leftdivision.interior.exception.DaoException;
+import com.leftdivision.interior.prod.dao.IProdDao;
+import com.leftdivision.interior.prod.vo.ProdVO;
+
+@Service
+public class ProdServiceImpl implements IProdService{
+	
+	@Inject
+	private IProdDao prodDao;
+	
+	@Override
+	public List<String> getSubCategory(String category) throws BizNotEffectedException {
+		
+		if(category == null) {
+			throw new BizNotEffectedException();
+		}
+		List<String> subCategoryList = prodDao.getSubCategory(category);
+		
+		return subCategoryList;
+	}
+
+	// 초기 페이지 띄울시 대분류로 가격낮은순 상위 20개만 먼저 출력
+	@Override
+	public List<ProdVO> getProdTopList(String category2) throws BizNotEffectedException {
+		List<ProdVO> prodTopList = null;
+		
+		if(category2 == null) {
+			throw new BizNotEffectedException();
+		}
+		String category = prodDao.getCategoryId(category2); 
+		
+		if(category != null) {
+			prodTopList = prodDao.getProdTopList(category);
+		}
+		
+		return prodTopList;
+	}
+
+	@Override
+	public List<ProdVO> getProdList(ProdVO prodVO) {
+		List<ProdVO> prodList = null;
+		
+		String category = prodDao.getCategoryId(prodVO.getProdDetailCategory());
+		prodVO.setProdDetailCategory(category);
+		
+		prodList = prodDao.getProdList(prodVO);
+		
+		
+		return prodList;
+	}
+
+	@Override
+	public ProdVO getProdView(String prodDetailId) throws BizNotEffectedException, BizNotFoundException {
+		if(prodDetailId == null) {
+			throw new BizNotEffectedException();
+		}
+		
+		ProdVO prod = prodDao.getProdView(prodDetailId);
+		if(prod == null) {
+			throw new BizNotFoundException();
+		}
+		
+		List<String> contents = prodDao.getProdDetailContents(prod.getProdDetailId());
+		if(contents == null) {
+			throw new BizNotEffectedException();
+		}
+		prod.setProdDetailContentsContent(contents);
+		
+		return prod;
+	}
+
+	
+	
+	
+	
+	
+	
+}

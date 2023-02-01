@@ -1,0 +1,237 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+    
+<style>
+	li{
+		list-style: none;
+	}
+	.prod_view_img{
+		text-align: center;
+	}
+	#view_Category{
+		text-align: left;
+	}
+	.prod_view_title{
+		font-size: 25px;
+		color:black; 
+		
+	}
+	.prod_view_price{
+		font-size: 30px;
+		font-weight: bolder;
+		color: black;
+	}
+	#won{
+		font-size: 20px;
+		font-weight: bolder;
+		color: black;
+	}
+	#point{
+		font-size: 17px;
+		font-weight: bold;
+		color: black;
+	}
+	#point_p{
+		font-size: 14px;
+	}
+	.prod_buy{
+		width: 150px;
+		height: 50px;
+		font-weight: bolder;
+	}
+	.prod_buy_select{
+		width: 500px;
+		height: 30px;
+		text-align: center;
+		font-weight: normal;
+		background-color: rgba(120,220,120,0.1);
+	}
+	.nav-tabs > a{
+		color: black; 
+		font-weight: bold;
+		background-color: rgba(0,0,0,0);
+	}
+	.prod_board_select_div{
+		height: 50px;
+		background-color: rgba(120,220,120,0.1);
+	}
+	.prod_board_select_div > ul{
+		width: 100%;
+		margin-left: 150px;		
+	}
+	.prod_board_select_div > ul > li {
+		margin-left: 0px;
+		width: 140px;
+		text-align: center;
+		border-bottom: 2px solid;
+	}
+	.nav-item > a{
+		color: black !important;
+	}
+	.nav-item > a:hover{
+		color: orange !important;
+	}
+</style>    
+<script type="text/javascript">
+$(document).ready(function(){
+	let price = '${prod.prodDetailPrice}'.replace(',','').replace(',','') 
+	let point = price * 0.01;
+	point = point.toLocaleString() + 'P';
+	
+	$('#point').html(point);
+	
+});
+
+$('.prod_buy_select').on('onchange',function(){
+	console.log('select');
+	option = $(this).val();
+	
+	console.log(option);
+});
+
+function checkVisible(element, check = 'above' ) {
+    const viewportHeight = $(window).height(); // Viewport Height
+    const scrolltop = $(window).scrollTop(); // Scroll Top
+    const y = $(element).offset().top;
+    const elementHeight = $(element).height();   
+    
+    // 화면에 안보여도 요소가 위에만 있으면 (페이지를 로드할때 스크롤이 밑으로 내려가 요소를 지나쳐 버릴경우)
+    if (check == "above") {
+    	return ((y < (viewportHeight + scrolltop)));
+    }
+}
+
+// 리소스가 로드 되면 함수 실행을 멈출지 말지 정하는 변수
+let isVisible = false;
+
+// 이벤트에 등록할 함수
+const func = function () {
+    if ( !isVisible && checkVisible('.prod_detail_contents') ) {
+        alert("엘리먼트 보임 !!");
+        $('.prod_nav_tabs > li').css('text-decoration','underline')
+        isVisible = true;
+    }
+    
+    // 만일 리소스가 로드가 되면 더이상 이벤트 스크립트가 있을 필요가 없으니 삭제
+    isVisible && window.removeEventListener('scroll', func);
+}
+
+// 스크롤 이벤트 등록
+window.addEventListener('scroll', func);
+
+$(document).on('mouseover','.prod_nav_tabs > li',function(){
+	$(this).css('cursor','pointer').css('color','aqua');
+});
+
+</script>    
+<br>
+<br>
+<br>
+<br>
+<br>
+<div>
+	<div class="row g-12">
+		<div class="col-1"></div>
+		<div class="col-5 prod_view_img">
+			<div id="view_Category"><tr>${prod.prodDetailCategory }</tr><tr> &gt; </tr><tr>${prod.prodDetailSubCategory }</tr> </div>
+			<img alt="" src="${prod.prodDetailImgUrl}">
+		</div>		
+		<div class="col-3 prod_view">
+			<br>
+			<div><b>${prod.prodDetailWriter }</b></div>
+			<div class="prod_view_title">${prod.prodDetailDescript }</div>
+			<br>
+			<div > 리뷰 별점이랑 개수 넣을곳</div>
+			<div > <span class="prod_view_price"> ${prod.prodDetailPrice } </span><span id="won">원</span> </div>
+			<hr>
+			<div class="row g-12 ">
+				<div class="col-2 ">
+					<p>혜택</p>
+				</div>
+				<div class="col-10 ">
+					<span id="point"></span><span id="point_p">  적립 (구매 금액의 1%)</span>
+				</div>
+			</div>
+			<br>
+			<div>
+				<select class="prod_buy_select">
+					<option selected="selected" >수량</option>
+					<option  value="1" >1</option>
+					<option  value="2" >2</option>
+					<option  value="3" >3</option>
+				</select>
+			</div>
+			<br>
+			<br>
+			<br>
+			<div class="row g-12 ">
+				<div class="col-1 "></div>
+				<div class="col-4 ">
+					<button type="button" class="btn btn-outline-secondary prod_buy">장바구니</button>
+				</div>
+				<div class="col-1 "></div>
+				<div class="col-4 ">
+					<button type="button" class="btn btn-outline-info prod_buy">바로구매</button>
+				</div>
+				<div class="col-2 "></div>
+			</div>
+		</div>		
+		<div class="col-3"></div>
+	</div>
+	<br>
+	<br>
+	<br>
+	<br>
+	<div class="row g-12">
+		<div class="col-1 "></div>
+		<div class="col-10 row g-12 prod_board_select_div " >
+			<!-- <nav class="prod_board_select">
+				<ol>
+					<li><a href="#" class="prod_board_select_a">상품 정보</a></li>
+					<li><a href="#" class="prod_board_select_a">리뷰</a></li>
+					<li><a href="#" class="prod_board_select_a">Q&A</a></li>
+				</ol>
+			</nav> -->
+			<ul class="nav nav-tabs prod_nav_tabs">
+			  <li class="nav-item">
+			    <a class="nav-link disabled prod_nav_a" >상품 정보</a>
+			  </li>
+			  <li class="nav-item">
+			    <a class="nav-link disabled prod_nav_a" >리뷰</a>
+			  </li>
+			  <li class="nav-item">
+			    <a class="nav-link disabled prod_nav_a" >문의사항</a>
+			  </li>
+			  <li class="nav-item">
+			    <a class="nav-link disabled">Disabled</a>
+			  </li>
+			</ul>
+		</div>
+		<div class="col-1 "></div>
+	</div>
+	<div class="prod_detail_contents"> 상품 상세 정보 보일 위치</div>
+	<br>
+	<div class="prod_review"> 상품 리뷰 보일 위치</div>
+	<br>
+	<div class="prod_QA"> 상품 문위사항 보일 위치</div>
+<br>
+<br>
+
+
+
+
+
+
+
+
+</div>
+
+
+
+
+
+
+
+
+
+

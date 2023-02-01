@@ -1,0 +1,23 @@
+//package com.leftdivision.interior.board;
+//
+//import javax.inject.Inject;
+//
+//import org.springframework.stereotype.Controller;
+//
+//import com.leftdivision.interior.board.service.IBoardService;
+//
+//@Controller
+//public class BoardController {
+//
+//	@Inject
+//	IBoardService boardSerivce;
+//	
+//	
+//	
+//	
+//	
+//	
+//	
+//	
+//	
+//}

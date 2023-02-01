@@ -1,0 +1,50 @@
+package com.leftdivision.interior.evaluation.dao;
+
+import java.util.List;
+
+import org.apache.ibatis.annotations.Mapper;
+
+import com.leftdivision.interior.evaluation.vo.AreaMarkerVO;
+import com.leftdivision.interior.evaluation.vo.MarkerVO;
+
+@Mapper
+public interface IEvaluationDao {
+	/**
+	 * registe marker at DB
+	 * @param marker
+	 * @author hgp
+	 * @return int
+	 */
+	int registeMarker(MarkerVO marker);
+
+	/**
+	 * get markerList at DB
+	 * @return List<MarkerVO>
+	 * @author hgp
+	 */
+	List<MarkerVO> getMarkerList();
+
+	/**
+	 * get markerList in Area at DB
+	 * @param areaMarker
+	 * @return List<MarkerVO>
+	 * @author hgp
+	 */
+	List<MarkerVO> areaGetMarkerList(AreaMarkerVO areaMarker);
+	
+	/**
+	 * get markerKey at DB
+	 * @return String
+	 * @author hgp
+	 */
+	String getMarkerKey();
+	
+	/**
+	 * get sequence last_number
+	 * @return int
+	 * @author hgp
+	 */
+	int getSeNo();
+	
+	
+}

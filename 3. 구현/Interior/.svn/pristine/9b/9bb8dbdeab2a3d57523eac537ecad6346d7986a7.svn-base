@@ -1,0 +1,78 @@
+package com.leftdivision.interior.member.dao;
+
+import java.util.List;
+
+import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
+
+import com.leftdivision.interior.member.vo.MailAuthVO;
+import com.leftdivision.interior.member.vo.MemberVO;
+
+@Mapper
+public interface IMemberDao {
+
+	/**
+	 * get memberList at DB
+	 * @author hgp
+	 * @return List<MemberVO>
+	 */
+	List<MemberVO> getMemberList();
+
+	/**
+	 * get idCheck at DB
+	 * @author hsk
+	 * @return List<MemberVO>
+	 */
+	int idCheck(String memId);
+
+	/**
+	 * merge MailAuth at DB
+	 * @author hsk
+	 * @param authKey 
+	 * @return List<MemberVO>
+	 */
+	int mergeMailAuth(@Param("mail") String mail, @Param("authKey") String authKey);
+	
+	/**
+	 * get completeAUth at DB
+	 * @author hsk
+	 * @param authKey 
+	 * @return List<MemberVO>
+	 */
+	void completeAuth(String mailId);
+
+	/**
+	 * get MailAUth at DB
+	 * @author hsk
+	 * @param authKey 
+	 * @return List<MemberVO>
+	 */
+	MailAuthVO getMailAuth(String mailId);
+
+	/**
+	 * get Member at DB
+	 * @author hsk
+	 * @param authKey 
+	 * @return List<MemberVO>
+	 */
+	MemberVO getMember(String memberId);
+
+	/**
+	 * check mailAuth at DB
+	 * @author hsk
+	 * @param authKey 
+	 * @return List<MemberVO>
+	 */
+	Integer checkMailAuth(String memberMail);
+
+	/**
+	 * check mailAuth at DB
+	 * @author hsk
+	 * @param authKey 
+	 * @return List<MemberVO>
+	 */
+	int insertMember(MemberVO member);
+
+	int insertUserRole(MemberVO member);
+
+}

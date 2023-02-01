@@ -1,0 +1,15 @@
+package com.leftdivision.interior.evaluation.service;
+
+import com.leftdivision.interior.evaluation.vo.MarkerVO;
+import com.leftdivision.interior.exception.BizNotEffectedException;
+
+public interface IEvaluationService {
+	/**
+	 * registeMarker
+	 * @param markerVO
+	 * @author hgp
+	 * @throws BizNotEffectedException 
+	 */
+	void registeMarker(MarkerVO marker) throws BizNotEffectedException;
+	
+}

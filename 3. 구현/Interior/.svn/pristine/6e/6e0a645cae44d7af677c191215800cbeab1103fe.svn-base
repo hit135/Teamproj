@@ -1,0 +1,133 @@
+package com.leftdivision.interior.prod;
+
+import java.util.List;
+import java.util.Map;
+
+import javax.inject.Inject;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+
+import com.leftdivision.interior.common.vo.ResultMessageVO;
+import com.leftdivision.interior.exception.BizNotEffectedException;
+import com.leftdivision.interior.exception.BizNotFoundException;
+import com.leftdivision.interior.exception.DaoException;
+import com.leftdivision.interior.prod.service.IProdService;
+import com.leftdivision.interior.prod.vo.ProdVO;
+
+@Controller
+public class ProdController {
+
+	private final Logger logger = LoggerFactory.getLogger(this.getClass());
+	
+	@Inject
+	private IProdService prodService;
+	
+	@RequestMapping("/prod/prodTop")
+	@ResponseBody
+	public List<ProdVO> prodTop(@RequestParam(required = false, name = "category") String category){
+		
+		List<ProdVO> prodTopList = null;
+		
+		try {
+			prodTopList = prodService.getProdTopList(category);
+			
+		} catch (BizNotEffectedException bne) {
+			bne.printStackTrace();
+		} catch (DaoException de) {
+			de.printStackTrace();
+		}
+		
+		return prodTopList;
+	}
+	
+	@RequestMapping("/prodList")
+	public String prodList(@RequestParam String category, Model model) {
+		
+		ResultMessageVO resultMessageVO = new ResultMessageVO();
+		
+		try {
+			List<String> subCategoryList = prodService.getSubCategory(category);
+			
+			model.addAttribute("subCategoryList",subCategoryList);
+			model.addAttribute("category",category);
+			return "prod.prodList";
+		} catch (BizNotEffectedException bne) {
+			bne.printStackTrace();
+			resultMessageVO.failSetting(false, "페이지 업로드 실패", "페이지 업로드에 실패하였습니다. 전산실에 문의 부탁드립니다 042-719-8850");
+		}catch (DaoException de) {
+			de.printStackTrace();
+			resultMessageVO.failSetting(false, "페이지 업로드 실패", "데이터를 불러오는중 오류발생. 전산실에 문의 부탁드립니다 042-719-8850");
+		}catch (Exception e) {
+			e.printStackTrace();
+			resultMessageVO.failSetting(false, "페이지 업로드 실패", "페이지 업로드에 실패하였습니다. 전산실에 문의 부탁드립니다 042-719-8850");
+		}
+		
+		model.addAttribute("resultMessageVO", resultMessageVO);
+		return "/common/message";
+	}
+	@RequestMapping("/prod/prodNewList")
+	@ResponseBody
+	public List<ProdVO> prodNewList(@RequestParam("category") String a, @RequestParam("limit") int b){
+		
+		logger.info("category : " + a + ", limit : " + b);
+		ProdVO prodVO = new ProdVO();
+		String limitRow = b+1+"";
+		String limitMax = b+12+"";
+		prodVO.setLimit(limitRow);
+		prodVO.setLimitMax(limitMax);
+		prodVO.setProdDetailCategory(a);
+		List<ProdVO> prodList = null;
+		try {
+			prodList = prodService.getProdList(prodVO);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		System.out.println(prodList.toString());
+		
+		return prodList;
+	}
+	
+	
+	
+	@RequestMapping("/prod/prodView")
+	public String prodView(@RequestParam String prodDetailId, Model model) {
+		
+		ResultMessageVO resultMessageVO = new ResultMessageVO();
+		
+		try {
+			ProdVO prod = prodService.getProdView(prodDetailId);
+			
+			logger.info("prodDetail : "+ prod);
+			model.addAttribute("prod",prod);
+			return "prod.prodView";
+		} catch (BizNotEffectedException bne) {
+			bne.printStackTrace();
+			resultMessageVO.failSetting(false, "페이지 업로드 실패", "없는 상품이거나 삭제된 상품입니다. 전산실에 문의 부탁드립니다 042-719-8850");
+		} catch (BizNotFoundException bfe) {
+			bfe.printStackTrace();
+			resultMessageVO.failSetting(false, "페이지 업로드 실패", "없는 상품이거나 삭제된 상품입니다. 전산실에 문의 부탁드립니다 042-719-8850");
+		} catch (Exception de) {
+			de.printStackTrace();
+			resultMessageVO.failSetting(false, "페이지 업로드 실패", "없는 상품이거나 삭제된 상품입니다. 전산실에 문의 부탁드립니다 042-719-8850");
+		}
+		
+		model.addAttribute("resultMessageVO", resultMessageVO);
+		return "/common/message";
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+}

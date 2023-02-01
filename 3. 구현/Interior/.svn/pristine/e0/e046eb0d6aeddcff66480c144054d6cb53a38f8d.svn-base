@@ -1,0 +1,37 @@
+package com.leftdivision.interior.member;
+
+import java.util.List;
+
+import javax.inject.Inject;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.RequestMapping;
+
+import com.leftdivision.interior.member.service.IMemberService;
+import com.leftdivision.interior.member.vo.MemberVO;
+
+@Controller
+public class MemberController {
+	
+	@Inject
+	IMemberService memberService;
+	
+	private final Logger logger = LoggerFactory.getLogger(this.getClass());
+	
+	@RequestMapping("/member")
+	public String member(Model model) {
+		
+		try {
+			List<MemberVO> memberList = memberService.getMemberList();
+			logger.info("memberList" + memberList);
+			model.addAttribute("memberList", memberList);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		return "member/memberList";
+	}
+}

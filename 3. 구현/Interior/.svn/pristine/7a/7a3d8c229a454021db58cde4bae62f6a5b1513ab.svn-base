@@ -1,0 +1,8 @@
+package com.leftdivision.interior.board.service;
+
+public interface IBoardService {
+
+	
+	
+	
+}

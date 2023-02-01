@@ -1,0 +1,53 @@
+package com.leftdivision.interior.board;
+
+import java.util.List;
+
+import javax.inject.Inject;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.RequestMapping;
+
+import com.leftdivision.interior.board.service.IBoardService;
+import com.leftdivision.interior.board.vo.BoardSearchVO;
+import com.leftdivision.interior.board.vo.BoardVO;
+import com.leftdivision.interior.exception.BizNotEffectedException;
+
+@Controller
+public class BoardController {
+
+	@Inject
+	IBoardService boardService;
+	
+	private final Logger logger = LoggerFactory.getLogger(this.getClass());
+	
+	@RequestMapping("/boardList")
+	public String boardList(@ModelAttribute("searchVO") BoardSearchVO searchVO, Model model) {
+
+		try{
+			List<BoardVO> BoardList = boardService.getBoardList(searchVO);
+			model.addAttribute("BoardList", BoardList);
+//			System.out.println("BoardList2 : " + BoardList);
+			logger.info("boardList: " + BoardList);
+			
+		}catch(BizNotEffectedException bne){
+			model.addAttribute("bne", bne);
+			bne.printStackTrace();
+		}catch(Exception de){
+			model.addAttribute("de", de);
+			de.printStackTrace();
+		}
+		return "board.boardList";
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+}

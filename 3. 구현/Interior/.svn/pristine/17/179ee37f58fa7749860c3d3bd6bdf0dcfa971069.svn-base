@@ -1,0 +1,67 @@
+package com.leftdivision.interior.member.service;
+
+import java.util.List;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import com.leftdivision.interior.exception.BizDuplicateKeyException;
+import com.leftdivision.interior.exception.BizMailAuthException;
+import com.leftdivision.interior.exception.BizNotEffectedException;
+import com.leftdivision.interior.exception.BizNotFoundException;
+import com.leftdivision.interior.exception.BizPasswordNotMatchedException;
+import com.leftdivision.interior.member.vo.MailAuthVO;
+import com.leftdivision.interior.member.vo.MemberVO;
+
+public interface IMemberService {
+
+	/**
+	 * get memberList
+	 * @author hgp
+	 * @return List<MemberVO>
+	 */
+	List<MemberVO> getMemberList();
+	
+	public boolean idCheck(String memberId);
+
+	/**
+	 * registe authKey
+	 * @param mail
+	 * @param authKey
+	 * @author hsk
+	 * @throws BizMailAuthException 
+	 */
+	void registerMailAuth(String mail, String authKey) throws BizMailAuthException;
+
+	boolean authKeyCompare(MailAuthVO mailAuthVO);
+	
+	/**
+	 * To register member
+	 * @param member
+	 * @author hsk
+	 * @throws BizDuplicateKeyException 
+	 * @throws BizNotEffectedException 
+	 * @throws BizMailAuthException 
+	 */
+	public void registerMember(MemberVO member) throws BizDuplicateKeyException, BizMailAuthException, BizNotEffectedException;
+
+	/**
+	 * login Check
+	 * @param member
+	 * @author hsk
+	 * @throws BizNotEffectedException 
+	 */
+	boolean loginCheck(MemberVO member, HttpServletRequest request, HttpServletResponse response) throws BizNotEffectedException;
+
+	/**
+	 * get member
+	 * @author hsk
+	 * @throws BizNotEffectedException 
+	 */
+	MemberVO getMember(String memberId) throws BizNotEffectedException;
+
+	void modifyMember(MemberVO member) throws BizNotFoundException, BizPasswordNotMatchedException, BizNotEffectedException;
+
+	void removeMember(MemberVO member) throws BizNotFoundException, BizPasswordNotMatchedException, BizNotEffectedException;
+
+}

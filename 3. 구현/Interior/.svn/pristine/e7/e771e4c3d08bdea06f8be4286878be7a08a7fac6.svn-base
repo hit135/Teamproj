@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.leftdivision.interior.board.dao.IBoardDao">
+
+<sql id="BoardSearch">
+	<if test="searchWord != null and searchWord !=''">
+		<choose>
+			<when test='searchType=="T"'>
+				and boast_title like '%' || #{searchWord} || '%'	
+			</when>	 			
+			<when test='searchType=="W"'>
+				and boast_writer like '%' || #{searchWord} || '%'
+			</when>	 			
+			<when test='searchType=="C"'>
+				and boast_content like '%' || #{searchWord} || '%'
+			</when>	 			
+		</choose>
+	</if>
+</sql>
+
+<select id="getBoardList" parameterType="BoardSearchVO"	resultType="BoardVO">
+select  			
+       BOAST_NUMBER
+     , BOAST_TITLE
+     , BOAST_IMAGE
+     , BOAST_WRITER
+     , BOAST_CONTENT
+     , BOAST_HIT
+     , to_char(BOAST_REG_DATE, 'YYYY-MM-DD') as BOAST_REG_DATE
+     , to_char(BOAST_MOD_DATE, 'YYYY-MM-DD') as BOAST_MOD_DATE
+     , BOAST_DEL_YN
+     , BOAST_DEL_ID
+     , BOAST_DEL_DATE
+     , BOAST_LIKE
+     , BOAST_HATE
+	        from boast_board a
+	        where a.boast_del_yn = 'N'
+            order by boast_number
+</select>
+
+<select id="getTotalRowCount" parameterType="BoardSearchVO"
+	resultType="int">
+	select 
+		count(*) 		
+	from boast_board 		
+	where boast_del_yn = 'N'
+	<include refid="BoardSearch"></include>
+</select>
+
+</mapper> 

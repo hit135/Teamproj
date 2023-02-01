@@ -1,0 +1,134 @@
+package com.leftdivision.interior.member.service;
+
+import java.util.List;
+
+import javax.inject.Inject;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.stereotype.Service;
+
+import com.leftdivision.interior.exception.BizDuplicateKeyException;
+import com.leftdivision.interior.exception.BizMailAuthException;
+import com.leftdivision.interior.exception.BizNotEffectedException;
+import com.leftdivision.interior.member.dao.IMemberDao;
+import com.leftdivision.interior.member.vo.MailAuthVO;
+import com.leftdivision.interior.member.vo.MemberVO;
+
+
+
+@Service
+public class MemberServiceImpl implements IMemberService {
+	
+	private final Logger logger = LoggerFactory.getLogger(this.getClass());
+	
+	@Inject
+	IMemberDao memDao;
+	
+	// 서블릿 설정에 올려놓은 암호 인코딩하는 객체 끌어쓰기
+	@Inject
+	private BCryptPasswordEncoder passwordEncoder;
+	
+
+	/**
+	 * 멤버리스트 가져오기
+	 * @author 박형구
+	 */
+	@Override
+	public List<MemberVO> getMemberList() {
+		List<MemberVO> memberList = memDao.getMemberList();
+		return memberList;
+	}
+
+	// 아이디 체크
+	@Override
+	public boolean idCheck(String memId) {
+		
+		int cnt = memDao.idCheck(memId);
+		
+		if(cnt == 0) {
+			return true;
+		}
+		
+		return false;
+	}
+
+//	인증번호를 DB에 저장
+	@Override
+	public void registerMailAuth(String mail, String authKey) throws BizMailAuthException {
+		// TODO Auto-generated method stub
+		logger.info("mail:" + mail);
+		logger.info("authKey : " + authKey);
+		
+		// 메일이 있나 없나 확인
+		int resultCnt = memDao.mergeMailAuth(mail, authKey);
+		
+		if(resultCnt == 0) {
+			throw new BizMailAuthException();
+		}
+	}
+	
+	// 인증번호 비교하는 서비스 임플
+	@Override
+	public boolean authKeyCompare(MailAuthVO mailAuthVO) {
+		logger.info("mailAuthVO : "+ mailAuthVO);
+		MailAuthVO vo = memDao.getMailAuth(mailAuthVO.getMailId());
+		
+		if(vo == null) {
+			return false;
+		}else {
+			// db와 사용자 입력 인증키가 같으면
+			if(vo.getMailKey().equals(mailAuthVO.getMailKey())) {
+				// db의 is_auth를 0에서 1로 바꿀것이다
+				// 마지막 회원가입 절차시 is_auth의 값을 물어서
+				// 1이면 통과
+				memDao.completeAuth(mailAuthVO.getMailId());
+				return true;
+			}else {
+				return false;
+			}
+		}
+	}
+
+//	회원가입 마지막 단계쯔음
+	@Override
+	public void registerMember(MemberVO member) throws BizDuplicateKeyException, BizMailAuthException, BizNotEffectedException {
+
+		if(member.getMemberId() != null && ! member.getMemberId().equals("")) {
+			MemberVO vo = memDao.getMember(member.getMemberId());
+			
+			if(vo != null) {
+				throw new BizDuplicateKeyException();
+			}
+			
+			// 인증메일 확인
+			Integer rowCount = memDao.checkMailAuth(member.getMemberMail());
+			if(rowCount != 1) {
+				throw new BizMailAuthException();
+			}
+			
+			
+			// 비밀번호 암호화 > 단방향임
+			String encodedPw = passwordEncoder.encode(member.getMemberPass());
+			logger.info("encodedPw : "+ encodedPw);
+			member.setMemberPass(encodedPw);
+			
+			int resultCnt1 =  memDao.insertMember(member);
+			if( resultCnt1 != 1) {
+				throw new BizNotEffectedException();
+			}
+			int resultCnt2 = memDao.insertUserRole(member);
+			if( resultCnt2 != 1) {
+				throw new BizNotEffectedException();
+			}
+			
+			
+		}
+		
+	}
+	
+
+	
+	
+}

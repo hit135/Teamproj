@@ -1,0 +1,81 @@
+package com.leftdivision.interior.evaluation;
+
+import java.util.List;
+
+import javax.inject.Inject;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
+
+import com.leftdivision.interior.evaluation.service.IEvaluationService;
+import com.leftdivision.interior.evaluation.vo.AreaMarkerVO;
+import com.leftdivision.interior.evaluation.vo.MarkerVO;
+import com.leftdivision.interior.exception.BizNotEffectedException;
+
+@Controller
+@RequestMapping("/evaluation")
+public class EvaluationController {
+	
+	private final Logger logger = LoggerFactory.getLogger(this.getClass());
+	
+	@Inject
+	IEvaluationService evaService;
+	
+	// 집 평가 메인 페이지
+	@RequestMapping("/Map")
+	public String memberView(Model model) {
+		// 마커 리스트 가져오기
+		List<MarkerVO> markerList;
+		try {
+			markerList = evaService.getMarkerList();
+			logger.info("markerList : " + markerList);
+			model.addAttribute("markerList", markerList);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		return "evaluation.evaluationMap";
+	}
+	
+	// 마커 등록
+	@RequestMapping("/registeMarker")
+	@ResponseBody
+	public boolean registeMarker(@ModelAttribute MarkerVO marker) {
+		logger.info("marker : " + marker);
+		boolean result = false;
+		// 마커 등록
+		try {
+			evaService.registeMarker(marker);
+			result = true;
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		return result;
+	}
+	
+	// 영역에 맞는 데이터 뽑아오기
+	@RequestMapping("/areaData")
+	@ResponseBody
+	public List<MarkerVO> areaData(@ModelAttribute AreaMarkerVO areaMarker){
+		List<MarkerVO> areaMarkerList = null;
+		try {
+			// 영역에 맞는 데이터 뽑아오기
+			areaMarkerList = evaService.areaGetMarkerList(areaMarker);
+			logger.info("areaMarkerList" + areaMarkerList);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return areaMarkerList;
+	}
+	
+	
+	
+	
+	
+}

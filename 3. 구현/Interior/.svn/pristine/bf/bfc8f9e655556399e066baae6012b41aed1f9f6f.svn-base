@@ -1,0 +1,276 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%> 
+<script src="http://code.jquery.com/jquery-latest.min.js"></script>
+	<link rel="shortcut icon" href="ftco-32x32.png">
+	<link href="https://fonts.googleapis.com/css?family=Roboto:300,400,900|Oswald:300,400,700" rel="stylesheet">
+	<link rel="stylesheet" href="${pageContext.request.contextPath }/fonts/icomoon/style.css">
+	<link rel="stylesheet" href="${pageContext.request.contextPath }/css/bootstrap.min.css">
+	<link rel="stylesheet" href="${pageContext.request.contextPath }/css/jquery-ui.css">
+	<link rel="stylesheet" href="${pageContext.request.contextPath }/css/owl.carousel.min.css">
+	<link rel="stylesheet" href="${pageContext.request.contextPath }/css/owl.theme.default.min.css">
+	<link rel="stylesheet" href="${pageContext.request.contextPath }/css/owl.theme.default.min.css">
+	<link rel="stylesheet" href="${pageContext.request.contextPath }/css/jquery.fancybox.min.css">
+	<link rel="stylesheet" href="${pageContext.request.contextPath }/css/bootstrap-datepicker.css">
+	<link rel="stylesheet" href="${pageContext.request.contextPath }/fonts/flaticon/font/flaticon.css">
+	<link rel="stylesheet" href="${pageContext.request.contextPath }/css/aos.css">
+	<link rel="stylesheet" href="${pageContext.request.contextPath }/css/style.css">
+        
+<!-- header 스타일 설정 -->
+<style>
+
+header {
+  height: 120px;
+  padding: 1rem;
+  background-color:transparent;
+  font-weight: bold;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: fixed;
+  top: 0;
+  width: 100%;
+  z-index:100;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+}
+	
+/* 스크롤 할 시 navbar 변화주는 css */
+header.activated-change-color{
+  background-color: white;
+  transition: all 0.2s ease 0s;  
+  border: 0.1px solid black;
+  width:100%;
+  z-index: 100;
+}
+
+header.activated-change-height{
+  transition: all 0.2s ease 0s;  
+  height: 80px;
+  width:100%;
+  z-index: 100;
+} 
+ 
+
+/* 홈페이지 이름 */
+h1{
+	font-family: "Oswald", sans-serif;
+	font-weight: 300 !important;
+	text-transform: uppercase;
+	width:300px;
+	text-align:right;
+	color:#FFFFFF;
+}
+
+/* 메뉴 부모  */
+nav {
+	width:100%;
+}
+
+a {
+color: #ffffff80;
+font-family: "Oswald", sans-serif;
+font-size:16px;
+font-weight:normal;
+}
+
+/* 창크기에 따라 메뉴 반응형 css */
+@media screen and (max-width: 1500px) {
+  nav {
+    /* display: none; */
+  }
+  
+  /* input[id="menuicon"] + label {
+  display:block;
+  z-index:2000;
+  }
+  
+  input[id="menuicon"] + label span {
+  display:block;
+  z-index:2000;
+  } */
+  
+} 
+
+.new-header-li :hover{
+    color: white;
+    
+}
+
+ul {
+    list-style:none;
+    margin:0;
+    padding:0;
+    
+}
+
+li {
+    margin-left:200px;
+    float: left;
+}
+
+/* side-bar CSS효과 */
+input[id="menuicon"] {
+	display:none;
+}
+
+input[id="menuicon"] + label {
+	display:none;
+	margin:30px;
+	width:60px;
+	height:50px;
+	position:relative;
+	cursor:pointer;
+}
+
+input[id="menuicon"] + label span {
+	display:none;
+	position:absolute;
+	width:100%;
+	height:5px;
+	border-radius:30px;
+	background:white;
+	transition:all .35s;
+}
+
+input[id="menuicon"] + label span:nth-child(1) {
+	top:0;
+} 
+
+input[id="menuicon"] + label span:nth-child(2) {
+	top:50%;
+	transform:translateY(-50%);
+}
+
+input[id="menuicon"] + label span:nth-child(3) {
+	bottom:0;
+}
+
+input[id="menuicon"]:checked + label {
+	z-index:2000;
+}
+
+input[id="menuicon"]:checked + label span {
+	background:#fff;
+}
+
+input[id="menuicon"]:checked + label span:nth-child(1) {
+	top:50%;
+	transform:translateY(-50%) rotate(45deg);
+	background-color:#25262a;
+	color:#25262a;
+}
+ 
+input[id="menuicon"]:checked + label span:nth-child(2) {
+	opacity:0;
+}
+
+input[id="menuicon"]:checked + label span:nth-child(3) {
+	bottom:50%;
+	transform:translateY(50%) rotate(-45deg);
+	background-color:#25262a;
+	color:#25262a;
+}
+
+div[class="sidebar"] {
+	width:300px;
+	height:100%;
+	background:white;
+	position:fixed;
+	top:0;
+	right:-300px;
+	z-index:1;
+	transition:all .35s;
+}
+
+input[id="menuicon"]:checked + label + div {
+	right:0;
+}
+
+ul.sidebar-menu {
+	float:left;
+}
+ul.sidebar-menu li {
+	margin-right:200px;
+}
+ 
+
+</style>
+
+<!-- navbar 스크롤 할 시 색깔변화주는 스크립트 -->
+<script>
+$(function(){
+   $(window).scroll(function(){
+   var navbar = $(this).scrollTop();
+//    console.log(navbar);
+   var $header = $('header');
+   let allSpan = $("label[for = 'menuicon']").children();
+   if(navbar > 0){
+       $header.addClass('activated-change-color');
+        allSpan.css("background" , "black");
+   }else{
+       $header.removeClass('activated-change-color');
+       allSpan.css("background" , "white");
+   }
+ });
+});
+
+ $(function(){
+   $(window).scroll(function(){
+   var navbar = $(this).scrollTop();
+//    console.log(navbar);
+   var $header = $('header');
+   if(navbar > 200){
+       $header.addClass('activated-change-height');
+   }else{
+       $header.removeClass('activated-change-height');
+   }
+ })
+})
+</script>
+<!-- sidebar 반응형 함수 -->
+<script>
+	window.onresize = function(event){
+	let allSpan = $("label[for = 'menuicon']").children();
+	if($(window).width() <= 1500){
+		$("label[for = 'menuicon']").show();
+		allSpan.show();
+		$("nav").hide();
+	}else {
+		$("label[for = 'menuicon']").hide();
+		allSpan.hide();
+		$("nav").show();
+	}	
+}
+
+
+</script>
+<!-- header 내용 -->
+<header>
+
+  <h1>test</h1>
+  <nav>
+  	 <ul class="new-header-ul">
+   		<li class="new-header-li"><a href="${pageContext.request.contextPath}/prodList?category=가구">About Us</a></li>
+   		<li class="new-header-li"><a href="#">Services</a></li>
+   		<li class="new-header-li"><a href="#">Testimonials</a></li>
+   		<li class="new-header-li"><a href="#">Contact Us</a></li>
+    </ul>
+  </nav>  
+    <input type="checkbox" id="menuicon">
+    <label for="menuicon">
+	    <span></span>
+	    <span></span>
+	    <span></span>
+    </label>
+    <div class="sidebar">
+    	<ul class="sidebar-menu">
+    	<li>About</li>
+    	<li>Services</li>
+    	<li>Testimonials</li>
+    	<li>Contact</li>
+    	</ul>
+    </div>
+    
+  
+  
+
+</header>

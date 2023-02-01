@@ -1,0 +1,37 @@
+package com.leftdivision.interior.board.service;
+
+import java.util.List;
+
+import javax.inject.Inject;
+
+import org.springframework.stereotype.Service;
+
+import com.leftdivision.interior.board.dao.IBoardDao;
+import com.leftdivision.interior.board.vo.BoardSearchVO;
+import com.leftdivision.interior.board.vo.BoardVO;
+import com.leftdivision.interior.exception.BizNotEffectedException;
+
+@Service("IBoardService")
+public class BoardServiceImpl implements IBoardService {
+
+	@Inject
+	private IBoardDao boardDao; 
+	
+	@Override
+	public List<BoardVO> getBoardList(BoardSearchVO searchVO) throws BizNotEffectedException {
+		int totalRowCount = boardDao.getTotalRowCount(searchVO);
+		
+		searchVO.setTotalRowCount(totalRowCount);
+		searchVO.pageSetting();
+		System.out.println("searchVO.toString() "+ searchVO.toString());
+		
+		List<BoardVO> BoardList = boardDao.getBoardList(searchVO);
+		System.out.println("BoardList.toString() "+ BoardList.toString());
+		
+		if(BoardList == null) {
+			throw new BizNotEffectedException();
+		}
+		return BoardList;
+	}
+	
+}

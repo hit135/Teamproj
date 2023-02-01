@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.leftdivision.interior.board.dao.IBoardDao">
+
+<sql id="BoardSearch">
+	<if test="searchWord != null and searchWord !=''">
+		<choose>
+			<when test='searchType=="T"'>
+				and boast_title like '%' || #{searchWord} || '%'	
+			</when>	 			
+			<when test='searchType=="W"'>
+				and boast_writer like '%' || #{searchWord} || '%'
+			</when>	 			
+			<when test='searchType=="C"'>
+				and boast_content like '%' || #{searchWord} || '%'
+			</when>	 			
+		</choose>
+	</if>
+</sql>
+
+<sql id="rnum">
+	where rnum between #{lastRow} and #{firstRow}   
+</sql>
+
+<select id="getBoardList" parameterType="BoardSearchVO"	resultType="BoardVO">
+select  			
+	c.*
+	from(
+		select
+			rownum as rnum
+			, b.*
+		from (
+			select
+       BOAST_NUMBER
+     , BOAST_TITLE
+     , BOAST_IMAGE
+     , BOAST_WRITER
+     , BOAST_CONTENT
+     , BOAST_HIT
+     , TO_CHAR(BOAST_REG_DATE, 'YYYY-MM-DD') as BOAST_REG_DATE
+     , TO_CHAR(BOAST_MOD_DATE, 'YYYY-MM-DD') as BOAST_MOD_DATE
+     , BOAST_DEL_YN
+     , BOAST_DEL_ID
+     , BOAST_DEL_DATE
+     , BOAST_LIKE
+     , BOAST_HATE
+	        from boast_board a
+	        where a.boast_del_yn = 'N'
+        <include refid="BoardSearch"></include> 
+		         order by BOAST_NUMBER ) b    
+	  	   		order by rnum desc ) c
+		 <include refid="rnum"></include>	
+</select>
+
+<select id="getTotalRowCount" parameterType="BoardSearchVO"
+	resultType="int">
+	select 
+		count(*) 		
+	from boast_board 		
+	where boast_del_yn = 'N'
+	<include refid="BoardSearch"></include>
+</select>
+
+<select id="checkUser" parameterType="BoardVO"
+	resultType="int">
+	select count(*)
+	from boast_board a, member b
+
+</select>
+
+<select id="getFreeBoardKey" resultType="string">
+	SELECT 
+	    ''
+	    ||TO_CHAR(SYSDATE, 'YYYY.mm.dd') 
+	    || '-'
+	    ||LPAD ( (select count(boast_number)+1 from boast_board) , 6, '0') AS bo_no 
+	FROM DUAL
+</select>
+
+<insert id="insertBoard" parameterType="BoardVO">    
+		INSERT INTO boast_board (    
+		 BOAST_NUMBER
+	   , BOAST_TITLE    				
+	   , BOAST_IMAGE        	 
+	   , BOAST_WRITER   			 
+	   , BOAST_CONTENT         	 
+	   , BOAST_HIT      			 
+	   , BOAST_REG_DATE    
+	   , BOAST_DEL_YN	    			
+       , BOAST_LIKE
+       , BOAST_HATE
+	) VALUES  (                 
+	     #{boastNumber} 
+	   , #{boastTitle}     
+       , #{boastImage, jdbcType=VARCHAR}
+	   , #{boastWriter}                        
+       , #{boastContent}
+	   , 0							
+	   , sysdate           		
+	   , 'N'
+       , 0
+       , 0
+	)                    
+</insert>
+
+
+
+
+</mapper> 

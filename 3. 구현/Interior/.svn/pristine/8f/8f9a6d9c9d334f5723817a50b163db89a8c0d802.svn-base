@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.leftdivision.interior.member.dao.IMemberDao">
+
+<!-- <select id="getMemberList" resultType="MemberVO">
+	SELECT 
+		 	 member_Id	          
+		,	 member_Pass		  
+		,	 member_Nm		  
+		,	 member_Add	  
+		,	 mem_Hp		      
+		,	 mem_Mail		  
+		,	 mem_Mileage			
+		,	 mem_Del_Yn	      
+		,	 mem_Join_Date		
+		,	 mem_Edit_Date		
+	FROM
+		member
+</select> -->
+
+<select id="idCheck" parameterType="String" resultType="int">
+	SELECT COUNT(*)
+	  FROM member
+	 WHERE member_id = #{memberId}
+</select>
+
+<update id="mergeMailAuth" parameterType="String" >
+MERGE 
+ INTO mail_auth a
+USING dual
+   ON (a.MAIL_ID = #{mail})
+ WHEN MATCHED THEN
+      UPDATE
+         SET a.MAIL_KEY = #{authKey}
+            ,a.MAIL_USE_DATE = SYSDATE
+ WHEN NOT MATCHED THEN
+      INSERT (a.MAIL_ID, a.MAIL_KEY, a.MAIL_TYPE, a.IS_AUTH, a.MAIL_REG_DATE, MAIL_USE_DATE)
+      VALUES (#{mail}, #{authKey}, 'SU00', 1, SYSDATE, SYSDATE)
+</update>
+
+<select id="getMailAuth" parameterType="String" resultType="MailAuthVO">
+	select 
+		mail_id
+	  , mail_key
+	from mail_auth
+	where mail_id = #{mailId}
+</select>
+
+<update id="completeAuth" parameterType="String">
+	update mail_auth 
+		set is_auth=1 
+	where mail_id = #{mailId}
+</update>
+
+
+<insert id="insertMember" parameterType="MemberVO">
+	insert into member( 			 				 		
+	     member_id   		, member_pass		, member_nm       
+		, member_add  	, member_hp	   	, member_mail       		
+	   , member_mileage	, member_reg_date 
+	)values(										 		
+	  	#{memberId}		,#{memberPass}			, #{memberNm}				 		
+	  	,#{memberAdd}		,#{memberHp}				, #{memberMail}	             		
+	  	,0					,sysdate						
+	)															
+</insert>
+
+<insert id="insertUserRole"
+	parameterType="MemberVO">
+		insert into member_role( 
+			member_id
+			, member_role
+			, member_role_nm
+		) values(
+		 	#{memberId}
+		 	, 'ME'
+		 	,'MEMEBER'
+	 	)
+</insert>
+
+<select id="getMember" parameterType="string" resultType="MemberVO">
+		SELECT 		          
+			member_id   		
+			, member_pass		
+			, member_nm       
+			, member_add  	
+			, member_hp	   	
+			, member_mail       		
+			, member_mileage	
+			, member_del_yn 	
+			, member_reg_date 
+			, member_mod_date	
+			, member_del_date	
+			, member_mail_auth_yn
+	FROM member           
+	WHERE member_id = #{memberId}      
+</select>
+
+
+<select id="checkMailAuth" parameterType="string" resultType="int">
+	select 
+	    count(*) 
+	from 
+		mail_auth
+	where 
+		mail_id = #{memberMail}
+		and is_auth = 1
+</select>
+
+<select id="loginCheck" parameterType="MemberVO"
+	resultType="MemberVO">
+ SELECT   											 				 
+	member_id
+	, member_pass
+	, member_nm
+	, member_add
+	, member_hp
+	, member_mail
+	, member_mileage
+	, member_del_yn
+	, member_reg_date 
+	, member_mod_date	
+	, member_del_date	
+	, member_mail_auth_yn
+ FROM MEMBER
+ WHERE member_id = #{memberId}
+ <!-- 암호화 하고 나면 이제 비밀번호를 가져가서 서버에서 비교하자 -->											
+ <!-- AND mem_pass = #{memPass}  -->														
+ AND member_del_yn = 'N'
+</select>
+
+<select id="getUserRole" parameterType="MemberVO"
+	resultType="MemberRoleVO">
+	select 				
+		 MEMBER_ID 				
+		,MEMBER_ROLE 			
+		,MEMBER_ROLE_NM 		
+	from member_role 	
+	where member_id = #{memberId} 	
+</select>
+
+
+<update id="updateMember" parameterType="MemberVO">
+	update member set
+	  member_pass			=	#{memberPassNew}
+	  ,member_nm			=	#{memberNm}
+	  ,member_add			=	#{memberAdd}
+	  ,member_hp			=	#{memberHp}
+	  ,member_mail		=	#{memberMail}
+	  ,member_mileage		=	#{memberMileage}
+	  ,member_mod_date	=	sysdate
+	where member_id 		= #{memberId}
+</update>
+
+
+
+
+
+</mapper> 

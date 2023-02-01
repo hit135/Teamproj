@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.leftdivision.interior.member.dao.IMemberDao">
+
+<select id="getMemberList" resultType="MemberVO">
+	SELECT 
+		 	 mem_Id	          
+		,	 mem_Pass		  
+		,	 mem_Name		  
+		,	 mem_Add1		  
+		,	 mem_Add2		  
+		,	 mem_Hp		      
+		,	 mem_Mail		  
+		,	 mem_Mileage			
+		,	 mem_Del_Yn	      
+		,	 mem_Join_Date		
+		,	 mem_Edit_Date		
+	FROM
+		member
+</select>
+
+
+
+</mapper> 

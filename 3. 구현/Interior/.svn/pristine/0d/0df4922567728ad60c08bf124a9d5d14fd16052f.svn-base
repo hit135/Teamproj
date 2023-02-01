@@ -1,0 +1,214 @@
+package com.leftdivision.interior.member.vo;
+
+import java.util.List;
+
+import com.leftdivision.interior.attach.vo.AttachVO;
+import com.leftdivision.interior.common.vo.MemberRoleVO;
+
+
+
+public class MemberVO {
+	private String memberId;					/* 회원 아이디 */
+	private String memberPass;				/* 회원 비밀번호 */
+	private String memberNm;					/* 회원 이름 */
+	private String memberAdd;				/* 회원 주소 */
+	private String memberHp;					/* 회원 폰번호 */
+	private String memberMail;				/* 회원 메일 */
+	private int memberMileage;				/* 회원 적립금 */
+	private String memberDelYn;				/* 회원 삭제유무 */
+	private String memberRegDate;			/* 회원 가입날짜 */
+	private String memberModDate;			/* 회원 수정날짜 */
+	private String memberDelDate;			/* 회원 삭제날짜 */
+	private String memberProvider;			/* 소셜 로그인 */
+	private String memberToken;				/* 토큰 */
+	private String memberMailAuthYn;		/* 사용자 이메일 인증 여부 */
+	
+	private List<MemberRoleVO> memberRoleList;
+	private String rememberMe;
+	
+	// 프로필 이미지 키값 번호
+	private Integer atchNo;
+
+	private String memberPassNew;
+	
+	private List<AttachVO> attachList;
+	
+	
+	@Override
+	public String toString() {
+		return "MemberVO [memberId=" + memberId + ", memberPass=" + memberPass + ", memberNm=" + memberNm
+				+ ", memberAdd=" + memberAdd + ", memberHp=" + memberHp + ", memberMail=" + memberMail
+				+ ", memberMileage=" + memberMileage + ", memberDelYn=" + memberDelYn + ", memberRegDate="
+				+ memberRegDate + ", memberModDate=" + memberModDate + ", memberDelDate=" + memberDelDate
+				+ ", memberProvider=" + memberProvider + ", memberToken=" + memberToken + ", memberMailAuthYn="
+				+ memberMailAuthYn + ", memberRoleList=" + memberRoleList + ", rememberMe=" + rememberMe + ", atchNo="
+				+ atchNo + ", memberPassNew=" + memberPassNew + ", attachList=" + attachList + "]";
+	}
+
+	public String getMemberId() {
+		return memberId;
+	}
+
+	public void setMemberId(String memberId) {
+		this.memberId = memberId;
+	}
+
+	public String getMemberPass() {
+		return memberPass;
+	}
+
+	public void setMemberPass(String memberPass) {
+		this.memberPass = memberPass;
+	}
+
+	public String getMemberNm() {
+		return memberNm;
+	}
+
+	public void setMemberNm(String memberNm) {
+		this.memberNm = memberNm;
+	}
+
+	public String getMemberAdd() {
+		return memberAdd;
+	}
+
+	public void setMemberAdd(String memberAdd) {
+		this.memberAdd = memberAdd;
+	}
+
+	public String getMemberHp() {
+		return memberHp;
+	}
+
+	public void setMemberHp(String memberHp) {
+		this.memberHp = memberHp;
+	}
+
+	public String getMemberMail() {
+		return memberMail;
+	}
+
+	public void setMemberMail(String memberMail) {
+		this.memberMail = memberMail;
+	}
+
+	public int getMemberMileage() {
+		return memberMileage;
+	}
+
+	public void setMemberMileage(int memberMileage) {
+		this.memberMileage = memberMileage;
+	}
+
+	public String getMemberDelYn() {
+		return memberDelYn;
+	}
+
+	public void setMemberDelYn(String memberDelYn) {
+		this.memberDelYn = memberDelYn;
+	}
+
+	public String getMemberRegDate() {
+		return memberRegDate;
+	}
+
+	public void setMemberRegDate(String memberRegDate) {
+		this.memberRegDate = memberRegDate;
+	}
+
+	public String getMemberModDate() {
+		return memberModDate;
+	}
+
+	public void setMemberModDate(String memberModDate) {
+		this.memberModDate = memberModDate;
+	}
+
+	public String getMemberDelDate() {
+		return memberDelDate;
+	}
+
+	public void setMemberDelDate(String memberDelDate) {
+		this.memberDelDate = memberDelDate;
+	}
+
+	public String getMemberProvider() {
+		return memberProvider;
+	}
+
+	public void setMemberProvider(String memberProvider) {
+		this.memberProvider = memberProvider;
+	}
+
+	public String getMemberToken() {
+		return memberToken;
+	}
+
+	public void setMemberToken(String memberToken) {
+		this.memberToken = memberToken;
+	}
+
+	public String getMemberMailAuthYn() {
+		return memberMailAuthYn;
+	}
+
+	public void setMemberMailAuthYn(String memberMailAuthYn) {
+		this.memberMailAuthYn = memberMailAuthYn;
+	}
+
+	public List<MemberRoleVO> getUserRoleList() {
+		return memberRoleList;
+	}
+
+	public void setUserRoleList(List<MemberRoleVO> userRoleList) {
+		this.memberRoleList = userRoleList;
+	}
+
+	public List<MemberRoleVO> getMemberRoleList() {
+		return memberRoleList;
+	}
+
+	public void setMemberRoleList(List<MemberRoleVO> memberRoleList) {
+		this.memberRoleList = memberRoleList;
+	}
+
+	public String getRememberMe() {
+		return rememberMe;
+	}
+
+	public void setRememberMe(String rememberMe) {
+		this.rememberMe = rememberMe;
+	}
+
+	public Integer getAtchNo() {
+		return atchNo;
+	}
+
+	public void setAtchNo(Integer atchNo) {
+		this.atchNo = atchNo;
+	}
+
+	public List<AttachVO> getAttachList() {
+		return attachList;
+	}
+
+	public void setAttachList(List<AttachVO> attachList) {
+		this.attachList = attachList;
+	}
+
+	public String getMemPassNew() {
+		return memberPassNew;
+	}
+
+	public void setMemPassNew(String memPassNew) {
+		this.memberPassNew = memPassNew;
+	}
+	
+	
+	
+	
+	
+	
+}
+	

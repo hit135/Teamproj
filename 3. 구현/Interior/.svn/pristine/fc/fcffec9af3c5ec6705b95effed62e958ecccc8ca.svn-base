@@ -1,0 +1,197 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+     <script src="https://code.jquery.com/jquery-latest.min.js"></script>
+     <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+
+<style>
+	.images{
+		width: 300px;
+		height: 300px; 
+	}
+	#prod{
+		margin-right: 80px;
+		margin-top: 50px;
+	}
+	.subCategry{
+		margin-top: 7px;
+		font-size: 15px;
+		font-style: inherit;
+		text-align: left;
+		margin-left: 50px;
+	
+	}
+	.subCategory_a{
+		color: black;
+	}
+	h2{
+	margin-left: 50px;
+		text-align: left;
+		font-style: normal;
+		font-size: 40px;
+		font-weight: 300;
+		color: black;
+	}
+	#prodList{
+	}
+	.prod_price{
+		font-size: 18px;
+		color: black;
+		font-style: normal;
+	}
+	.prod_descript{
+		font-size: 14px;
+		color: black;
+		margin-top: -20px;
+	}
+	.prod_brand{
+		font-size: 10px;
+		font-weight: bold;
+	}
+	.prod_detail{
+		
+	}
+</style>
+
+<script type="text/javascript">
+let limit = 15;
+let category = '${category}'
+
+
+
+$(window).scroll(function() {
+	bol = true;
+	sf = {"category" :category, "limit":limit};
+    if (($(window).scrollTop() == $(document).height() - $(window).height()) && bol) {
+      	console.log('스크롤내렷다',sf);
+    	prodStr = '';
+    	$.ajax({
+      	   		 url : "<c:url value='/prod/prodNewList'/>" 
+    			,type:"post"
+    			,data: sf
+    			,dataType: 'json'
+    			,success:function(data){
+    				console.log(data);
+    				for( i in data){
+    					prod = data[i];
+    					console.log("data success: " , prod);
+    					
+    					prodStr += "<div class='col-md-3' id='prod'> ";					
+    					prodStr += "<article class='prod_hi'> ";					
+    					prodStr += "<div><img class='images' src='"+prod.prodDetailImgUrl+"'></div>";
+    					prodStr += "<div><span class='prod_brand'>"+prod.prodDetailWriter+"</span><input class='prod_id' type='hidden' value='"+prod.prodDetailId+"'/><br>";
+    					prodStr += "<span class='prod_descript'>"+prod.prodDetailDescript+"</span><br>";
+    					prodStr += "<span class='prod_price'><b>"+prod.prodDetailPrice+"원</b></span><br></div>";
+    					
+    					prodStr += "</article>";
+    					prodStr += "</div>";
+    				}
+     				$('#prodList').append(prodStr);
+     				limit += 12;
+     				bol = false;
+    			}
+    			,error:function(e){
+    				alert("에러가 발생 하였습니다. 전산실에 문의 부탁드립니다. 042 -719- 8850");
+    				console.log("e.status : ", e);
+    			}
+    	});
+  }
+});
+$(function(){
+	
+	console.log(category);
+	prodStr = '';
+	$.ajax({
+		url: "<c:url value='/prod/prodTop'/>"
+			,type: "post"
+			,data : {"category" : category}
+			,success:function(data){
+				for( i in data){
+					prod = data[i];
+					console.log("data success: " , prod);
+					
+					prodStr += "<div class='col-md-3' id='prod'> ";					
+					prodStr += "<article class='prod_hi'> ";					
+					prodStr += "<div><img class='images' src='"+prod.prodDetailImgUrl+"'></div>";
+					prodStr += "<div><span class='prod_brand'>"+prod.prodDetailWriter+"</span><input class='prod_id' type='hidden' value='"+prod.prodDetailId+"'/><br>";
+					prodStr += "<span class='prod_descript'>"+prod.prodDetailDescript+"</span><br>";
+					prodStr += "<span class='prod_price'><b>"+prod.prodDetailPrice+"원</b></span><br></div>";
+					
+					prodStr += "</article>";
+					prodStr += "</div>";
+				}
+				
+ 				$('#prodList').append(prodStr);
+				
+				
+			}
+			,error:function(e){
+				alert("에러가 발생 하였습니다. 전산실에 문의 부탁드립니다. 042 -719- 8850");
+				console.log("e.status : ". e.status);
+			}
+
+	});
+});
+$(document).on('mouseover','.prod_hi',function(){
+	console.log("마우스올렸다");
+	$(this).css('cursor','pointer')
+	
+	$(this).click(function(){
+		console.log('클릭!',$(this).find('input.prod_id').val());
+		prodId = $(this).find('input.prod_id').val();
+		location.href = "${pageContext.request.contextPath}/prod/prodView?prodDetailId="+prodId;
+	});
+	
+});
+ 
+</script>
+<br>
+<br>
+<br>
+<br>
+
+<div class="row g-12" style="magin-top:100px; '">
+	<div class="col-md-1"></div>
+	<div class="col-md-2">
+		<div id ="prodSubCategoryList">
+			<h2><b>${category }</b></h2> 
+			<br>
+			<ul>
+				<c:forEach items="${subCategoryList }" var="subCategory">
+				<div class="subCategry">
+						<a href="#" class="subCategory_a">${subCategory }</a>
+				</div>	
+				</c:forEach>
+			</ul>
+		</div>
+	</div>
+	<div class="col-md-8">
+		<div class="container" >
+				<div style="background-color: aqua;">나중에 여기에다가 가구 추천 슬라이드 띄우면 될까나?</div>
+				<div class="row  g-12" id="prodList"></div>         
+		</div>
+	</div>
+	<div class="col-md-1"></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

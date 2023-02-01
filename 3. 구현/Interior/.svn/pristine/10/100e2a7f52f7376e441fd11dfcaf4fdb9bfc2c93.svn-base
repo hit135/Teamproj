@@ -1,0 +1,18 @@
+package com.leftdivision.interior.evaluation.dao;
+
+import org.apache.ibatis.annotations.Mapper;
+
+import com.leftdivision.interior.evaluation.vo.MarkerVO;
+
+@Mapper
+public interface IEvaluationDao {
+	/**
+	 * registe marker at DB
+	 * @param marker
+	 * @author hgp
+	 * @return int
+	 */
+	int registeMarker(MarkerVO marker);
+	
+	
+}

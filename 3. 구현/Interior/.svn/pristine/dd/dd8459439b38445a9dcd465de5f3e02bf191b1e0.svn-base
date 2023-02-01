@@ -1,0 +1,22 @@
+package com.leftdivision.interior.member.dao;
+
+import java.util.List;
+
+import org.apache.ibatis.annotations.Mapper;
+
+import com.leftdivision.interior.member.vo.MemberVO;
+
+@Mapper
+public interface IMemberDao {
+
+	/**
+	 * get memberList at DB
+	 * @author hgp
+	 * @return List<MemberVO>
+	 */
+	List<MemberVO> getMemberList();
+
+	int idCheck(String memId);
+	
+
+}

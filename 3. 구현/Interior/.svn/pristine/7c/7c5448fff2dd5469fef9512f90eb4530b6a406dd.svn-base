@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.leftdivision.interior.evaluation.dao.IEvaluationDao">
+
+<insert id="registeMarker" parameterType="MarkerVO">
+	INSERT INTO marker (
+	     MARKER_ID
+	    ,MARKER_LAT
+	    ,MARKER_LONGT
+	    ,MARKER_LOCATION
+	    ,MARKER_ADD
+	    ,MARKER_REG_ID
+	    ,MARKER_REG_DATE
+	) VALUES (
+	     (SELECT 'MARK' || LPAD(NVL(MAX(replace(MARKER_ID,'MARK','')),0) + 1, 6 ,'0') FROM marker)
+	    ,#{markerLat}
+	    ,#{markerLongt}
+	    ,#{markerLocation}
+	    ,#{markerAdd}
+	    ,#{markerRegId}
+	    ,SYSDATE
+	)
+</insert>
+
+
+<select id="getMarkerList" resultType="MarkerVO">
+	SELECT   MARKER_ID
+	        ,MARKER_LAT
+	        ,MARKER_LONGT
+	        ,MARKER_LOCATION
+	        ,MARKER_ADD
+	        ,MARKER_REG_ID
+	        ,MARKER_REG_DATE
+	        ,MARKER_DEL_ID
+	        ,MARKER_DEL_DATE
+	FROM     marker
+</select>
+
+<select id="areaGetMarkerList" parameterType="AreaMarkerVO"
+resultType="MarkerVO">
+	SELECT   MARKER_ID
+	        ,MARKER_LAT
+	        ,MARKER_LONGT
+	        ,MARKER_LOCATION
+	        ,MARKER_ADD
+	        ,MARKER_REG_ID
+	        ,MARKER_REG_DATE
+	        ,MARKER_DEL_ID
+	        ,MARKER_DEL_DATE
+	FROM     marker
+	WHERE   <![CDATA[TO_NUMBER(MARKER_LAT) >= #{minLat}]]>
+	  AND   <![CDATA[TO_NUMBER(MARKER_LAT) <= #{maxLat}]]>
+	  AND   <![CDATA[TO_NUMBER(MARKER_LONGT) >= #{minLongt}]]>
+	  AND   <![CDATA[TO_NUMBER(MARKER_LONGT) <= #{maxLongt}]]>
+</select>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</mapper>

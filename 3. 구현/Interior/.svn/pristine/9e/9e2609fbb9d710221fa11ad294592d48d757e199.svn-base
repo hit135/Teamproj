@@ -1,0 +1,18 @@
+package com.leftdivision.interior.member.service;
+
+import java.util.List;
+
+import com.leftdivision.interior.member.vo.MemberVO;
+
+public interface IMemberService {
+
+	/**
+	 * get memberList
+	 * @author hgp
+	 * @return List<MemberVO>
+	 */
+	List<MemberVO> getMemberList();
+	
+	public boolean idCheck(String memId);
+
+}

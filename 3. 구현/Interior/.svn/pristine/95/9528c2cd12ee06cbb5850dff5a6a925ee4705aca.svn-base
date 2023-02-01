@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE tiles-definitions PUBLIC
+       "-//Apache Software Foundation//DTD Tiles Configuration 3.0//EN"
+       "http://tiles.apache.org/dtds/tiles-config_3_0.dtd">
+ 
+<tiles-definitions>
+
+   <!-- home 페이지 -->
+   <definition name="home" template="/WEB-INF/spring/tiles/lay/basicLayout.jsp">
+	    <put-attribute name="header" value="/WEB-INF/spring/tiles/part/header.jsp" />
+	     <put-attribute name="body" value="/WEB-INF/views/home.jsp" />
+	    <put-attribute name="footer" value="/WEB-INF/spring/tiles/part/footer.jsp" />
+   </definition>
+   <!-- board 페이지 -->
+   <definition name="board.*" template="/WEB-INF/views/board/tiles/boardLayout.jsp">
+	    <put-attribute name="header" value="/WEB-INF/spring/tiles/part/header.jsp" />
+	     <put-attribute name="body" value="/WEB-INF/views/board/tiles/{1}.jsp" />
+	    <put-attribute name="footer" value="/WEB-INF/spring/tiles/part/footer.jsp" />
+   </definition>
+   <!-- member 페이지 -->
+   <definition name="member.*" template="/WEB-INF/views/member/tiles/memberLayout.jsp">
+	    <put-attribute name="header" value="/WEB-INF/spring/tiles/part/header.jsp" />
+	     <put-attribute name="body" value="/WEB-INF/views/member/tiles/{1}.jsp" />
+	    <put-attribute name="footer" value="/WEB-INF/spring/tiles/part/footer.jsp" />
+   </definition>
+   <!-- evaluation(평가) 페이지 -->
+   <definition name="evaluation.*" template="/WEB-INF/views/evaluation/tiles/evaluationLayout.jsp">
+	    <put-attribute name="header" value="/WEB-INF/spring/tiles/part/header2.jsp" />
+	     <put-attribute name="body" value="/WEB-INF/views/evaluation/tiles/{1}.jsp" />
+   </definition>
+   
+    <!-- prod 페이지 -->
+   <definition name="prod.prodList" template="/WEB-INF/views/prod/tiles/prodLayOut.jsp">
+	    <put-attribute name="header" value="/WEB-INF/spring/tiles/part/header.jsp" />
+	    <put-attribute name="body" value="/WEB-INF/views/prod/tiles/prodList.jsp" />
+   </definition>
+   <definition name="prod.prodView" template="/WEB-INF/spring/tiles/lay/basicLayout.jsp">
+	    <put-attribute name="header" value="/WEB-INF/spring/tiles/part/header.jsp" />
+	    <put-attribute name="body" value="/WEB-INF/views/prod/tiles/prodView.jsp" />
+	    <put-attribute name="footer" value="/WEB-INF/spring/tiles/part/footer.jsp" />
+   </definition>
+   
+</tiles-definitions>   
+   
+   

@@ -1,0 +1,46 @@
+package com.leftdivision.interior.evaluation;
+
+import javax.inject.Inject;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
+
+import com.leftdivision.interior.evaluation.service.IEvaluationService;
+import com.leftdivision.interior.evaluation.vo.MarkerVO;
+import com.leftdivision.interior.exception.BizNotEffectedException;
+
+@Controller
+@RequestMapping("/evaluation")
+public class EvaluationController {
+	
+	private final Logger logger = LoggerFactory.getLogger(this.getClass());
+	
+	@Inject
+	IEvaluationService evaService;
+	
+	@RequestMapping("/Map")
+	public String memberView() {
+		
+		return "evaluation.evaluationMap";
+	}
+	
+	@RequestMapping("/registeMarker")
+	@ResponseBody
+	public boolean registeMarker(@ModelAttribute MarkerVO marker) {
+		logger.info("marker : " + marker);
+		boolean result = false;
+		// 마커 등록
+		try {
+			evaService.registeMarker(marker);
+			result = true;
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		return result;
+	}
+}

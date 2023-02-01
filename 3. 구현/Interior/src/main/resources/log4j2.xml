@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration status="WARN">
+  
+  <Appenders>
+    <Console name="Console" target="SYSTEM_OUT">
+      <!-- <PatternLayout pattern="%d{HH:mm:ss.SSS} [%t] %-5level %logger{36} - %msg%n"/> -->
+      <PatternLayout pattern="%d{yyyy-MM-dd hh:mm:ss} [ %C , line : %L , Method : %M ] : %m%n"/>
+    </Console>
+   	 
+  </Appenders>
+  
+  
+  <Loggers>
+    <Logger name="com.leftdivision.interior" level="info"  additivity="false">
+      <AppenderRef ref="Console"/>
+    </Logger>
+    
+   
+    
+    <Root level="error">
+      <AppenderRef ref="Console"/>
+    </Root>
+  </Loggers>
+  
+  
+  
+</Configuration>

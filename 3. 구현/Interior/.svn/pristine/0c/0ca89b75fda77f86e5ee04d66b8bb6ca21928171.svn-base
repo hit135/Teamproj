@@ -1,0 +1,69 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+
+<style>
+html,
+body,
+.entire{
+	width: 100%;
+	height: 100%;
+}
+
+.part{
+		height: 100%;
+}
+
+#eva_map{
+	position:relative;
+	height: 100%;
+}
+
+.home_reg_btn{
+	position:absolute;
+	z-index: 100;
+}
+
+.eva_search{
+	position: absolute;
+	z-index: 100;
+	top: 100px;
+}
+.marker_list{
+	background-color: yellow;
+	height: 100%;
+}
+
+</style>
+
+<div class="entire">
+	<div class="part row">
+		<!-- 지도 부분 -->
+		<div id="eva_map" class="col-10">
+			<div>
+				<!-- 내 집 등록 버튼 -->
+				<button class="home_reg_btn">내 집 등록</button>
+			</div>
+			<!-- 주소 검색창 -->
+			<div class="eva_search">
+				<input type="text">
+			</div>
+		</div>
+		<!-- 마커 목록 부분 -->
+		<div class="col-2 marker_list">
+			
+		</div>
+	</div>
+</div>
+
+<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=cbe4f64d0e9315cf34ab23484183cd12"></script>
+<script type="text/javascript">
+	var mapContainer = document.getElementById('eva_map'),
+	mapOptions = {
+	     center: new kakao.maps.LatLng(36.326725, 127.407470),
+	     level: 3
+	};
+	
+	var map = new kakao.maps.Map(mapContainer, mapOptions);
+	
+	
+</script>

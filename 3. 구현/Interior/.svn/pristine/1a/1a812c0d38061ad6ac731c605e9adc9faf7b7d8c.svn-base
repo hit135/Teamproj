@@ -1,0 +1,65 @@
+package com.leftdivision.interior.evaluation.service;
+
+import java.util.List;
+
+import javax.inject.Inject;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Service;
+
+import com.leftdivision.interior.evaluation.dao.IEvaluationDao;
+import com.leftdivision.interior.evaluation.vo.AreaMarkerVO;
+import com.leftdivision.interior.evaluation.vo.MarkerVO;
+import com.leftdivision.interior.exception.BizNotEffectedException;
+
+@Service
+public class EvaluationServiceImpl implements IEvaluationService{
+	
+	private final Logger logger = LoggerFactory.getLogger(this.getClass());
+	
+	@Inject
+	IEvaluationDao evaMapper;
+	
+	// 마커 등록
+	@Override
+	public void registeMarker(MarkerVO marker) throws BizNotEffectedException {
+		
+		logger.info("marker : " + marker);
+		// db에 마커 등록
+		int resultCnt = evaMapper.registeMarker(marker);
+		// db에 등록 실패시
+		if(resultCnt == 0) {
+			throw new BizNotEffectedException();
+		}
+	}
+
+	// 마커 리스트 가져오기
+	@Override
+	public List<MarkerVO> getMarkerList() throws BizNotEffectedException {
+		List<MarkerVO> markerList = null;
+		try {
+			markerList = evaMapper.getMarkerList();
+		} catch (Exception e) {
+			throw new BizNotEffectedException();
+		}
+
+		
+		return markerList;
+	}
+	
+	// 영역에 맞는 마커 리스트 가져오기
+	@Override
+	public List<MarkerVO> areaGetMarkerList(AreaMarkerVO areaMarker) throws BizNotEffectedException {
+		List<MarkerVO> areaMarkerList = null;
+		try {
+			areaMarkerList = evaMapper.areaGetMarkerList(areaMarker);
+			logger.info("areaMarkerList : " + areaMarkerList);
+		} catch (Exception e) {
+			throw new BizNotEffectedException();
+		}
+		
+		return areaMarkerList;
+	}
+	
+}
